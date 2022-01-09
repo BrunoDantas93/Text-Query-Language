@@ -1,0 +1,16 @@
+LOAD TABLE produtos FROM "produtos2.csv";
+LOAD TABLE vendas FROM "vendas.csv";
+SAVE TABLE vendas AS "olaaaa.csv";
+SHOW TABLE produtos;
+SHOW TABLE vendas;
+SELECT ID,Preco FROM produtos WHERE Preco = 1.0 AND ID <> "B1" LIMIT 0;
+SHOW TABLE produtos;
+SELECT * FROM produtos JOIN vendas USING(ID = "B1");
+CREATE TABLE mais_vendidos FROM SELECT * FROM vendas WHERE Qt > 50;
+CREATE TABLE tudo FROM vendas JOIN produtos USING(ID = "B2");
+PROCEDURE ola DO
+CREATE TABLE Ola FROM SELECT * FROM vendas WHERE Qt > 50;
+CREATE TABLE tudos FROM vendas JOIN produtos USING(ID = "B2");
+SHOW TABLE Ola;
+SHOW TABLE tudos;
+END
