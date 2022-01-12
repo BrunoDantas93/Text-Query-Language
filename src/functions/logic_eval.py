@@ -229,7 +229,6 @@ class LogicEval:
     @staticmethod
     def _CREATE(args):
         try:
-
             print("\n-------- Executing the command '[CREATE]'  -------- ")
             tables.AddTable(args['TABLE'])
 
@@ -249,7 +248,7 @@ class LogicEval:
             print("---------------------------------------------------------------------------------------------------------------------------------------------------\n")
 
         except Exception as e:
-            raise Exception(e, " \n ", args, "\n--------------------------------------------------------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _CreateFunction(ast):
@@ -262,14 +261,14 @@ class LogicEval:
                 LogicEval.Procedure[ast['FunctionName']] = []
 
             for c in ast['ListofComands']:
-                command = LogicEval._RArgs(c)
+                command = LogicEval._eval_operator(c)
                 LogicEval.Procedure[ast['FunctionName']].append(command)
 
             print("THe function {"+ast['FunctionName']+"} was created and successfully added to the list of functions")
             print("--------------------------------------------------------------------------------------------------\n")
             return  None
         except Exception as e:
-            raise Exception(e, " \n ", ast , "\n--------------------------------------------------------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _CALL(ast):
@@ -335,7 +334,7 @@ class LogicEval:
     def evaluate(ast):
 
         if type(ast) is dict:
-            return LogicEval._eval_operator(ast)
+            return LogicEval._eval_Command(ast)
 
         if type(ast) is list:
             ans = None
@@ -346,81 +345,83 @@ class LogicEval:
         raise Exception("Unknown AST type: {",type(ast),"}")
 
     @staticmethod
-    def _RArgs(ast):
-        x = True
-        ast2 = ast
-        dic = {}
-        while x:
-            dic = {}
-            for key in ast2:
-                if key == 'args':
-                    for x in ast2[key]:
-                         if x == "args":
-                            dic['args'] = ast2[key]['args']
-                         elif x == "Condictions":
-
-                            if dic['AND'] == 'AND':
-                                dic.pop('AND')
-                                dic['AND'] = []
-
-                            args = ast2[key]['Condictions']['args']
-                            con = ast2[key]['Condictions']
-                            con.pop('args')
-                            dic['AND'].append(con)
-                            dic['args'] = args
-
-                         elif x == 'nCommands':
-
-                            dic['newCommands'] = LogicEval._RArgs(ast2[key]['nCommands'])
-
-                         elif x == 'AND':
-                             pass
-
-                         else:
-                            dic[x] = ast2[key][x]
-                else:
-                    dic[key] = ast2[key]
-
-            if 'WHERE' in dic:
-                if 'args' in dic['WHERE']:
-
-                    args = dic['WHERE']['args']
-                    if 'AND' in dic['WHERE']['args']:
-                        dic['AND'] = []
-
-
-                    args = dic['WHERE']['args']
-                    dic['WHERE'].pop('args')
-                    dic['args'] = args
-
-            if 'args' in dic:
-                if dic['args'] == ';':
-                    dic.pop('args')
-                    dic['end'] = ';'
-                ast2 = dic
-
-            if 'end' in dic:
-                x = False
-            elif 'newCommands' in dic:
-                x = False
-
-        return dic
-
-    @staticmethod
-    def _eval_operator(ast):
+    def _eval_Command(ast):
 
         if 'Command' in ast:
             if ast['Command'] in LogicEval.Commands:
-                command = LogicEval._RArgs(ast)
-                anw = LogicEval.Commands[ast['Command']](command)
-                return anw
+                command = LogicEval._eval_operator(ast)
+                answer = LogicEval.Commands[ast['Command']](command)
+                return None #answer
             else:
                 raise Exception('This {'+ ast['Command'] +'} Command is not available')
 
         if 'Function' in ast:
             if 'PROCEDURE' in ast['Function']:
-                aws = LogicEval._CreateFunction(ast)
-                return aws
+                answer = LogicEval._CreateFunction(ast)
+                return answer
 
         raise Exception('Undefined AST', ast)
+
+    @staticmethod
+    def _eval_operator(ast):
+
+
+        if 'args' in ast:
+            if ast['args'] != ';':
+                args = ast['args']
+                ast.pop('args')
+                ast = LogicEval._eval_operator({**ast, **args})
+            else:
+                ast['end'] = ast['args']
+                ast.pop('args')
+
+        if 'nCommands' in ast:
+            ast['newCommands'] = LogicEval._eval_operator(ast['nCommands'])
+            ast.pop('nCommands')
+
+            if 'end' in ast['newCommands']:
+                args = ast['newCommands']['end']
+                ast['newCommands'].pop('end')
+                if type(args) == str:
+                    ast = {**ast, 'end': args}
+
+
+        if 'WHERE' in ast:
+            if 'args' in ast['WHERE']:
+                args = ast['WHERE']['args']
+                ast['WHERE'].pop('args')
+                if type(args) == str:
+                    ast ={**ast, 'end': args}
+                else:
+                    ast = LogicEval._eval_operator({**ast, **args})
+
+        if 'AND' in ast:
+            if 'opAND' not in ast:
+                ast['opAND'] = []
+
+            if 'Condictions' in ast:
+
+                Condictions = ast['Condictions']
+                ast.pop('Condictions')
+                args = Condictions['args']
+                Condictions.pop('args')
+                ast['opAND'].append(Condictions)
+
+                if type(args) == str:
+                    ast = {**ast, 'end': args}
+                else:
+                    ast = LogicEval._eval_operator({**ast, **args})
+
+
+        if 'end' in ast:
+
+            if 'AND' in ast:
+                if type(ast['AND']) == str:
+                    ast.pop('AND')
+                    ast['AND'] = ast['opAND']
+                if 'opAND' in ast:
+                    ast.pop('opAND')
+            return ast
+
+        raise Exception('Undefined Command', ast)
 

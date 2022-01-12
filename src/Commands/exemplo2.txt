@@ -1,7 +1,7 @@
 LOAD TABLE programars FROM "programars.csv";
 SHOW TABLE programars;
 SELECT * FROM programars WHERE id = 93;
-PROCEDURE ola DO
+PROCEDURE hello DO
 CREATE TABLE bestss FROM SELECT * FROM programars WHERE avaliacoes >= 4.5;
 SELECT * FROM bestss LIMIT 10;
 SAVE TABLE bestss AS "bestss.csv";

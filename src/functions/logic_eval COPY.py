@@ -58,14 +58,14 @@ class LogicEval:
             return {**newTable, **newTable2}
 
         except Exception as e:
-            raise Exception(e, " <-> ", args + "\n-------------------------------------------------\n")
+            raise Exception(e, " <-> ", args , "\n-------------------------------------------------\-------------------------------------------------\n")
 
     @staticmethod
     def _LOAD(args):
 
         try:
             print("\n-------- Executing the command '[LOAD]'Table name = [ "+args['TABLE']+" ] --------- ")
-            responce = FILES.OpenFile("src\\" + str(args['FROM']['str']), "CSV")
+            responce = FILES.OpenFile("src\\CSV\\" + str(args['FROM']['str']), "CSV")
 
             if responce[0] is False:
                 raise Exception(responce[1])
@@ -75,11 +75,11 @@ class LogicEval:
             CMSI.cmsIntrepeter(responce[1], args['TABLE'], tables)
 
             print('The table was read successfully')
-            print("-------------------------------------------------\n")
+            print("--------------------------------------------------------------------------------------------------\n")
             return None
 
         except Exception as e:
-            raise Exception(e, "\n", args + "\n-------------------------------------------------\n")
+            raise Exception(e, "\n", args , "\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def _SHOW(args):
@@ -91,15 +91,16 @@ class LogicEval:
 
 
             if args['TABLE'] in table:
-                LogicEval._PrintTable(table[args['TABLE']])
-                print("-------------------------------------------------\n")
+                limit = 0
+                LogicEval._PrintTable(table[args['TABLE']],limit)
+                print("-------------------------------------------------------------------------------------------------\n")
             else:
                 raise Exception("This table { "+args['TABLE']+" } does not exist in the database.")
 
             return None
 
         except Exception as e:
-            raise Exception(e, "\n", args + "\n-------------------------------------------------\n")
+            raise Exception(e, "\n", args, "\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def _DISCARD(args):
@@ -108,9 +109,9 @@ class LogicEval:
             print("-------- Executing the command '[DISCARD]' Table name = [ "+args['TABLE']+" ] - -------- ")
             tables.DeleteTable(args['TABLE'])
             print("The table {"+args['TABLE']+"} has been deleted successfully")
-            print("-------------------------------------------------\n")
+            print("--------------------------------------------------------------------------------------------------\n")
         except Exception as e:
-            raise Exception(e, "\n", args + "\n-------------------------------------------------\n")
+            raise Exception(e, "\n", args , "\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def _SAVE(args):
@@ -119,22 +120,22 @@ class LogicEval:
 
             print("\n-------- Executing the command '[SAVE]' Table name = [ "+args['TABLE']+" ] --------- ")
             if args['TABLE'] in tables.GetTables():
-                res = FILES.CreateFile("src\\", args['AS']['str'], tables.GetTables()[args['TABLE']])
+                res = FILES.CreateFile("src\\CSV\\", args['AS']['str'], tables.GetTables()[args['TABLE']])
             else:
                 raise Exception("This table { "+args['TABLE']+" } does not exist in the database.")
 
             print("The table {" + args['TABLE'] + "} was created successfully")
-            print("-------------------------------------------------\n")
+            print("------------------------------------------------------------------------------------------------\n")
             return None
         except Exception as e:
-            raise Exception(e, "\n", args + "\n-------------------------------------------------\n")
+            raise Exception(e, "\n", args , "\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def _CreateTable(table, args):
 
         try:
             temp = {}
-            postion = 0
+            position = 0
             arP = []
 
             rule = ""
@@ -151,8 +152,8 @@ class LogicEval:
             # TEsta os elementos
             for x in table[args['column']]:
                 if LogicEval.operators[rule]([x, args['value']]) is True:
-                    arP.append(postion)
-                postion += 1
+                    arP.append(position)
+                position += 1
 
             # Guarda no novo dic
             for key in table:
@@ -164,7 +165,7 @@ class LogicEval:
                     p += 1
             return temp
         except Exception as e:
-            raise Exception(e, " <-> ", table,"", args +"\n-------------------------------------------------\n")
+            raise Exception(e, " <-> ", table,"", args ,"\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def _SELECT(args):
@@ -173,7 +174,6 @@ class LogicEval:
             print("\n-------- Executing the command '[SELECT]' Table name = [ "+args['FROM']+" ] -------- ")
             TableName = args['FROM']
             Columns = args['list']
-
 
             if TableName not in tables.GetTables():
                 raise Exception("The table { "+TableName+" } does not exist in the database")
@@ -198,6 +198,9 @@ class LogicEval:
                             raise Exception("The column { " + x['column'] + " } does not exist in the database")
                 Tables = newTable
 
+            if TableName in Tables:
+                Tables = Tables[TableName]
+
             CTable = {}
             for column in Columns:
                 if column != '*':
@@ -211,13 +214,17 @@ class LogicEval:
             if args['Command'] == 'return':
                 return CTable
             else:
-                LogicEval._PrintTable(CTable)
-                print("-------------------------------------------------\n")
+
+                limit = 0
+                if 'LIMIT' in args:
+                    limit = args['LIMIT']
+
+                LogicEval._PrintTable(CTable, int(limit))
 
             return None
 
         except Exception as e:
-            raise Exception(e, " \n ", args + "\n-------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _CREATE(args):
@@ -239,10 +246,10 @@ class LogicEval:
                     tables.AddValues(args['TABLE'], key, value)
 
             print("The table {"+args['TABLE']+"} was created and successfully added to the database")
-            print("--------------------------------------------------------------------------------------------------\n")
+            print("---------------------------------------------------------------------------------------------------------------------------------------------------\n")
 
         except Exception as e:
-            raise Exception(e, " \n ", args + "\n-------------------------------------------------\n")
+            raise Exception(e, " \n ", args, "\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def _CreateFunction(ast):
@@ -259,10 +266,10 @@ class LogicEval:
                 LogicEval.Procedure[ast['FunctionName']].append(command)
 
             print("THe function {"+ast['FunctionName']+"} was created and successfully added to the list of functions")
-            print("-------------------------------------------------\n")
+            print("--------------------------------------------------------------------------------------------------\n")
             return  None
         except Exception as e:
-            raise Exception(e, " \n ", ast + "\n-------------------------------------------------\n")
+            raise Exception(e, " \n ", ast , "\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def _CALL(ast):
@@ -280,26 +287,31 @@ class LogicEval:
 
             print("The function {"+ast['FunctionName']+"} was called and managed to complete all operations")
 
-            print("-------------------------------------------------\n")
+            print("--------------------------------------------------------------------------------------------------\n")
 
             return None
 
         except Exception as e:
-            raise Exception(e, " \n ", ast + "\n-------------------------------------------------\n")
+            raise Exception(e, " \n ", ast ,"\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
-    def _PrintTable(table):
+    def _PrintTable(table, limit):
 
         try:
             arP = {}
-            postion = 0
+            position = 0
 
             for x in table:
-                arP[x] = postion
-                postion += 1
+                arP[x] = position
+                position += 1
 
             items = []
+
             leng = len(table[list(table.keys())[0]])
+            if LogicEval.operators[">"]([limit, 0]):
+               if LogicEval.operators[">"]([leng, limit]):
+                    leng = limit
+
             for i in range(0, leng):
                 temp = [i]
                 for k, v in arP.items():
@@ -308,7 +320,7 @@ class LogicEval:
 
             space = "{:<12} "
             for i in range(0, len(table)):
-                space += "{:<40} "
+                space += "{:<25} "
 
             print(space.format('POS', *arP))
 
@@ -317,7 +329,7 @@ class LogicEval:
                 print(space.format(*v))
 
         except Exception as e:
-            raise Exception(e, " <-> ", table, + "\n-------------------------------------------------\n")
+            raise Exception(e,"\n--------------------------------------------------------------------------------------------------\n")
 
     @staticmethod
     def evaluate(ast):
