@@ -8,9 +8,10 @@ SHOW TABLE produtos;
 SELECT * FROM produtos JOIN vendas USING(ID = "B1");
 CREATE TABLE mais_vendidos FROM SELECT * FROM vendas WHERE Qt > 50;
 CREATE TABLE tudo FROM vendas JOIN produtos USING(ID = "B2");
+CREATE TABLE tudos FROM vendas JOIN produtos USING(ID = "B2") WHERE Preco = 1.5;
 PROCEDURE ola DO
 CREATE TABLE Ola FROM SELECT * FROM vendas WHERE Qt > 50;
-CREATE TABLE tudos FROM vendas JOIN produtos USING(ID = "B2");
+CREATE TABLE tudoss FROM vendas JOIN produtos USING(ID = "B2");
 SHOW TABLE Ola;
-SHOW TABLE tudos;
+SHOW TABLE tudoss;
 END

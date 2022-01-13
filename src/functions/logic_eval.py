@@ -58,7 +58,7 @@ class LogicEval:
             return {**newTable, **newTable2}
 
         except Exception as e:
-            raise Exception(e, " <-> ", args , "\n-------------------------------------------------\-------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _LOAD(args):
@@ -79,7 +79,7 @@ class LogicEval:
             return None
 
         except Exception as e:
-            raise Exception(e, "\n", args , "\n--------------------------------------------------------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _SHOW(args):
@@ -100,7 +100,7 @@ class LogicEval:
             return None
 
         except Exception as e:
-            raise Exception(e, "\n", args, "\n--------------------------------------------------------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _DISCARD(args):
@@ -111,7 +111,7 @@ class LogicEval:
             print("The table {"+args['TABLE']+"} has been deleted successfully")
             print("--------------------------------------------------------------------------------------------------\n")
         except Exception as e:
-            raise Exception(e, "\n", args , "\n--------------------------------------------------------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _SAVE(args):
@@ -291,7 +291,7 @@ class LogicEval:
             return None
 
         except Exception as e:
-            raise Exception(e, " \n ", ast ,"\n--------------------------------------------------------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def _PrintTable(table, limit):
@@ -328,7 +328,7 @@ class LogicEval:
                 print(space.format(*v))
 
         except Exception as e:
-            raise Exception(e,"\n--------------------------------------------------------------------------------------------------\n")
+            raise Exception(e)
 
     @staticmethod
     def evaluate(ast):
@@ -351,7 +351,7 @@ class LogicEval:
             if ast['Command'] in LogicEval.Commands:
                 command = LogicEval._eval_operator(ast)
                 answer = LogicEval.Commands[ast['Command']](command)
-                return None #answer
+                return answer
             else:
                 raise Exception('This {'+ ast['Command'] +'} Command is not available')
 
@@ -365,7 +365,6 @@ class LogicEval:
     @staticmethod
     def _eval_operator(ast):
 
-
         if 'args' in ast:
             if ast['args'] != ';':
                 args = ast['args']
@@ -374,6 +373,7 @@ class LogicEval:
             else:
                 ast['end'] = ast['args']
                 ast.pop('args')
+
 
         if 'nCommands' in ast:
             ast['newCommands'] = LogicEval._eval_operator(ast['nCommands'])
@@ -395,26 +395,24 @@ class LogicEval:
                 else:
                     ast = LogicEval._eval_operator({**ast, **args})
 
-        if 'AND' in ast:
-            if 'opAND' not in ast:
-                ast['opAND'] = []
+            if 'AND' in ast:
+                if 'opAND' not in ast:
+                    ast['opAND'] = []
 
-            if 'Condictions' in ast:
+                if 'Condictions' in ast:
+                    Condictions = ast['Condictions']
+                    ast.pop('Condictions')
+                    args = Condictions['args']
+                    Condictions.pop('args')
+                    ast['opAND'].append(Condictions)
 
-                Condictions = ast['Condictions']
-                ast.pop('Condictions')
-                args = Condictions['args']
-                Condictions.pop('args')
-                ast['opAND'].append(Condictions)
-
-                if type(args) == str:
-                    ast = {**ast, 'end': args}
-                else:
-                    ast = LogicEval._eval_operator({**ast, **args})
+                    if type(args) == str:
+                        ast = {**ast, 'end': args}
+                    else:
+                        ast = LogicEval._eval_operator({**ast, **args})
 
 
         if 'end' in ast:
-
             if 'AND' in ast:
                 if type(ast['AND']) == str:
                     ast.pop('AND')
