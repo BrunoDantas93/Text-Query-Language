@@ -38,69 +38,67 @@ Rule 32    L -> ;
 Rule 33    J -> * F
 Rule 34    J -> a_list F
 Rule 35    O -> JOIN var U
-Rule 36    U -> USING ( Variable = N ) ;
-Rule 37    U -> USING ( Variable = string ) ;
-Rule 38    U -> USING ( Variable = N ) W
-Rule 39    U -> USING ( Variable = string ) W
-Rule 40    Function -> CALL var ;
-Rule 41    a_list -> var
-Rule 42    a_list -> a_list , var
-Rule 43    N -> nr
-Rule 44    Variable -> var
-Rule 45    Function -> PROCEDURE var DO c_list END
-Rule 46    c_list -> Commands
-Rule 47    c_list -> c_list Commands
+Rule 36    U -> USING ( Variable ) ;
+Rule 37    U -> USING ( Variable ) W
+Rule 38    Function -> CALL var ;
+Rule 39    a_list -> var
+Rule 40    a_list -> a_list , var
+Rule 41    N -> nr
+Rule 42    Variable -> var
+Rule 43    Function -> PROCEDURE var DO c_list END
+Rule 44    c_list -> Commands
+Rule 45    c_list -> c_list Commands
 
 Terminals, with rules where they appear
 
-(                    : 36 37 38 39
-)                    : 36 37 38 39
+(                    : 36 37
+)                    : 36 37
 *                    : 33
-,                    : 42
-;                    : 12 14 17 19 20 31 32 36 37 40
+,                    : 40
+;                    : 12 14 17 19 20 31 32 36 38
 <                    : 24 27 28 29
-=                    : 22 23 26 27 36 37 38 39
+=                    : 22 23 26 27
 >                    : 25 26 28 29
 AND                  : 30
 AS                   : 19
-CALL                 : 40
+CALL                 : 38
 CREATE               : 11
 DISCARD              : 7
-DO                   : 45
-END                  : 45
+DO                   : 43
+END                  : 43
 FROM                 : 14 15 16 17 18 20
 JOIN                 : 35
 LIMIT                : 20 31
 LOAD                 : 6
-PROCEDURE            : 45
+PROCEDURE            : 43
 SAVE                 : 8
 SELECT               : 10
 SHOW                 : 9
 TABLE                : 12 13
-USING                : 36 37 38 39
+USING                : 36 37
 WHERE                : 21
 error                : 
-nr                   : 20 22 43
-string               : 14 19 23 29 37 39
-var                  : 12 13 15 16 17 20 35 40 41 42 44 45
+nr                   : 20 22 41
+string               : 14 19 23 29
+var                  : 12 13 15 16 17 20 35 38 39 40 42 43
 
 Nonterminals, with rules where they appear
 
 C                    : 21 30
-Commands             : 4 18 46 47
+Commands             : 4 18 44 45
 F                    : 13 33 34
 Function             : 5
 J                    : 10
 L                    : 22 23 24 25 26 27 28 29
-N                    : 24 25 26 27 28 31 36 38
+N                    : 24 25 26 27 28 31
 O                    : 16
 S                    : 1 2
 T                    : 6 7 8 9 11
 U                    : 35
-Variable             : 3 22 23 24 25 26 27 28 29 36 37 38 39
-W                    : 15 38 39
-a_list               : 34 42
-c_list               : 45 47
+Variable             : 3 22 23 24 25 26 27 28 29 36 37
+W                    : 15 37
+a_list               : 34 40
+c_list               : 43 45
 code                 : 2 0
 
 Parsing method: LALR
@@ -113,15 +111,15 @@ state 0
     (3) S -> . Variable
     (4) S -> . Commands
     (5) S -> . Function
-    (44) Variable -> . var
+    (42) Variable -> . var
     (6) Commands -> . LOAD T
     (7) Commands -> . DISCARD T
     (8) Commands -> . SAVE T
     (9) Commands -> . SHOW T
     (10) Commands -> . SELECT J
     (11) Commands -> . CREATE T
-    (40) Function -> . CALL var ;
-    (45) Function -> . PROCEDURE var DO c_list END
+    (38) Function -> . CALL var ;
+    (43) Function -> . PROCEDURE var DO c_list END
 
     var             shift and go to state 6
     LOAD            shift and go to state 7
@@ -146,15 +144,15 @@ state 1
     (3) S -> . Variable
     (4) S -> . Commands
     (5) S -> . Function
-    (44) Variable -> . var
+    (42) Variable -> . var
     (6) Commands -> . LOAD T
     (7) Commands -> . DISCARD T
     (8) Commands -> . SAVE T
     (9) Commands -> . SHOW T
     (10) Commands -> . SELECT J
     (11) Commands -> . CREATE T
-    (40) Function -> . CALL var ;
-    (45) Function -> . PROCEDURE var DO c_list END
+    (38) Function -> . CALL var ;
+    (43) Function -> . PROCEDURE var DO c_list END
 
     var             shift and go to state 6
     LOAD            shift and go to state 7
@@ -237,21 +235,22 @@ state 5
 
 state 6
 
-    (44) Variable -> var .
+    (42) Variable -> var .
 
-    var             reduce using rule 44 (Variable -> var .)
-    LOAD            reduce using rule 44 (Variable -> var .)
-    DISCARD         reduce using rule 44 (Variable -> var .)
-    SAVE            reduce using rule 44 (Variable -> var .)
-    SHOW            reduce using rule 44 (Variable -> var .)
-    SELECT          reduce using rule 44 (Variable -> var .)
-    CREATE          reduce using rule 44 (Variable -> var .)
-    CALL            reduce using rule 44 (Variable -> var .)
-    PROCEDURE       reduce using rule 44 (Variable -> var .)
-    $end            reduce using rule 44 (Variable -> var .)
-    =               reduce using rule 44 (Variable -> var .)
-    <               reduce using rule 44 (Variable -> var .)
-    >               reduce using rule 44 (Variable -> var .)
+    var             reduce using rule 42 (Variable -> var .)
+    LOAD            reduce using rule 42 (Variable -> var .)
+    DISCARD         reduce using rule 42 (Variable -> var .)
+    SAVE            reduce using rule 42 (Variable -> var .)
+    SHOW            reduce using rule 42 (Variable -> var .)
+    SELECT          reduce using rule 42 (Variable -> var .)
+    CREATE          reduce using rule 42 (Variable -> var .)
+    CALL            reduce using rule 42 (Variable -> var .)
+    PROCEDURE       reduce using rule 42 (Variable -> var .)
+    $end            reduce using rule 42 (Variable -> var .)
+    =               reduce using rule 42 (Variable -> var .)
+    <               reduce using rule 42 (Variable -> var .)
+    >               reduce using rule 42 (Variable -> var .)
+    )               reduce using rule 42 (Variable -> var .)
 
 
 state 7
@@ -299,8 +298,8 @@ state 11
     (10) Commands -> SELECT . J
     (33) J -> . * F
     (34) J -> . a_list F
-    (41) a_list -> . var
-    (42) a_list -> . a_list , var
+    (39) a_list -> . var
+    (40) a_list -> . a_list , var
 
     *               shift and go to state 22
     var             shift and go to state 24
@@ -320,14 +319,14 @@ state 12
 
 state 13
 
-    (40) Function -> CALL . var ;
+    (38) Function -> CALL . var ;
 
     var             shift and go to state 26
 
 
 state 14
 
-    (45) Function -> PROCEDURE . var DO c_list END
+    (43) Function -> PROCEDURE . var DO c_list END
 
     var             shift and go to state 27
 
@@ -460,7 +459,7 @@ state 22
 state 23
 
     (34) J -> a_list . F
-    (42) a_list -> a_list . , var
+    (40) a_list -> a_list . , var
     (14) F -> . FROM string ;
     (15) F -> . FROM var W
     (16) F -> . FROM var O
@@ -477,11 +476,11 @@ state 23
 
 state 24
 
-    (41) a_list -> var .
+    (39) a_list -> var .
 
-    ,               reduce using rule 41 (a_list -> var .)
-    FROM            reduce using rule 41 (a_list -> var .)
-    AS              reduce using rule 41 (a_list -> var .)
+    ,               reduce using rule 39 (a_list -> var .)
+    FROM            reduce using rule 39 (a_list -> var .)
+    AS              reduce using rule 39 (a_list -> var .)
 
 
 state 25
@@ -503,14 +502,14 @@ state 25
 
 state 26
 
-    (40) Function -> CALL var . ;
+    (38) Function -> CALL var . ;
 
     ;               shift and go to state 34
 
 
 state 27
 
-    (45) Function -> PROCEDURE var . DO c_list END
+    (43) Function -> PROCEDURE var . DO c_list END
 
     DO              shift and go to state 35
 
@@ -602,32 +601,32 @@ state 32
 
 state 33
 
-    (42) a_list -> a_list , . var
+    (40) a_list -> a_list , . var
 
     var             shift and go to state 42
 
 
 state 34
 
-    (40) Function -> CALL var ; .
+    (38) Function -> CALL var ; .
 
-    var             reduce using rule 40 (Function -> CALL var ; .)
-    LOAD            reduce using rule 40 (Function -> CALL var ; .)
-    DISCARD         reduce using rule 40 (Function -> CALL var ; .)
-    SAVE            reduce using rule 40 (Function -> CALL var ; .)
-    SHOW            reduce using rule 40 (Function -> CALL var ; .)
-    SELECT          reduce using rule 40 (Function -> CALL var ; .)
-    CREATE          reduce using rule 40 (Function -> CALL var ; .)
-    CALL            reduce using rule 40 (Function -> CALL var ; .)
-    PROCEDURE       reduce using rule 40 (Function -> CALL var ; .)
-    $end            reduce using rule 40 (Function -> CALL var ; .)
+    var             reduce using rule 38 (Function -> CALL var ; .)
+    LOAD            reduce using rule 38 (Function -> CALL var ; .)
+    DISCARD         reduce using rule 38 (Function -> CALL var ; .)
+    SAVE            reduce using rule 38 (Function -> CALL var ; .)
+    SHOW            reduce using rule 38 (Function -> CALL var ; .)
+    SELECT          reduce using rule 38 (Function -> CALL var ; .)
+    CREATE          reduce using rule 38 (Function -> CALL var ; .)
+    CALL            reduce using rule 38 (Function -> CALL var ; .)
+    PROCEDURE       reduce using rule 38 (Function -> CALL var ; .)
+    $end            reduce using rule 38 (Function -> CALL var ; .)
 
 
 state 35
 
-    (45) Function -> PROCEDURE var DO . c_list END
-    (46) c_list -> . Commands
-    (47) c_list -> . c_list Commands
+    (43) Function -> PROCEDURE var DO . c_list END
+    (44) c_list -> . Commands
+    (45) c_list -> . c_list Commands
     (6) Commands -> . LOAD T
     (7) Commands -> . DISCARD T
     (8) Commands -> . SAVE T
@@ -729,17 +728,17 @@ state 41
 
 state 42
 
-    (42) a_list -> a_list , var .
+    (40) a_list -> a_list , var .
 
-    ,               reduce using rule 42 (a_list -> a_list , var .)
-    FROM            reduce using rule 42 (a_list -> a_list , var .)
-    AS              reduce using rule 42 (a_list -> a_list , var .)
+    ,               reduce using rule 40 (a_list -> a_list , var .)
+    FROM            reduce using rule 40 (a_list -> a_list , var .)
+    AS              reduce using rule 40 (a_list -> a_list , var .)
 
 
 state 43
 
-    (45) Function -> PROCEDURE var DO c_list . END
-    (47) c_list -> c_list . Commands
+    (43) Function -> PROCEDURE var DO c_list . END
+    (45) c_list -> c_list . Commands
     (6) Commands -> . LOAD T
     (7) Commands -> . DISCARD T
     (8) Commands -> . SAVE T
@@ -759,15 +758,15 @@ state 43
 
 state 44
 
-    (46) c_list -> Commands .
+    (44) c_list -> Commands .
 
-    END             reduce using rule 46 (c_list -> Commands .)
-    LOAD            reduce using rule 46 (c_list -> Commands .)
-    DISCARD         reduce using rule 46 (c_list -> Commands .)
-    SAVE            reduce using rule 46 (c_list -> Commands .)
-    SHOW            reduce using rule 46 (c_list -> Commands .)
-    SELECT          reduce using rule 46 (c_list -> Commands .)
-    CREATE          reduce using rule 46 (c_list -> Commands .)
+    END             reduce using rule 44 (c_list -> Commands .)
+    LOAD            reduce using rule 44 (c_list -> Commands .)
+    DISCARD         reduce using rule 44 (c_list -> Commands .)
+    SAVE            reduce using rule 44 (c_list -> Commands .)
+    SHOW            reduce using rule 44 (c_list -> Commands .)
+    SELECT          reduce using rule 44 (c_list -> Commands .)
+    CREATE          reduce using rule 44 (c_list -> Commands .)
 
 
 state 45
@@ -856,7 +855,7 @@ state 50
     (27) C -> . Variable < = N L
     (28) C -> . Variable < > N L
     (29) C -> . Variable < > string L
-    (44) Variable -> . var
+    (42) Variable -> . var
 
     var             shift and go to state 6
 
@@ -889,31 +888,31 @@ state 52
 
 state 53
 
-    (45) Function -> PROCEDURE var DO c_list END .
+    (43) Function -> PROCEDURE var DO c_list END .
 
-    var             reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    LOAD            reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    DISCARD         reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    SAVE            reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    SHOW            reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    SELECT          reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    CREATE          reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    CALL            reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    PROCEDURE       reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
-    $end            reduce using rule 45 (Function -> PROCEDURE var DO c_list END .)
+    var             reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    LOAD            reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    DISCARD         reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    SAVE            reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    SHOW            reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    SELECT          reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    CREATE          reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    CALL            reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    PROCEDURE       reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
+    $end            reduce using rule 43 (Function -> PROCEDURE var DO c_list END .)
 
 
 state 54
 
-    (47) c_list -> c_list Commands .
+    (45) c_list -> c_list Commands .
 
-    END             reduce using rule 47 (c_list -> c_list Commands .)
-    LOAD            reduce using rule 47 (c_list -> c_list Commands .)
-    DISCARD         reduce using rule 47 (c_list -> c_list Commands .)
-    SAVE            reduce using rule 47 (c_list -> c_list Commands .)
-    SHOW            reduce using rule 47 (c_list -> c_list Commands .)
-    SELECT          reduce using rule 47 (c_list -> c_list Commands .)
-    CREATE          reduce using rule 47 (c_list -> c_list Commands .)
+    END             reduce using rule 45 (c_list -> c_list Commands .)
+    LOAD            reduce using rule 45 (c_list -> c_list Commands .)
+    DISCARD         reduce using rule 45 (c_list -> c_list Commands .)
+    SAVE            reduce using rule 45 (c_list -> c_list Commands .)
+    SHOW            reduce using rule 45 (c_list -> c_list Commands .)
+    SELECT          reduce using rule 45 (c_list -> c_list Commands .)
+    CREATE          reduce using rule 45 (c_list -> c_list Commands .)
 
 
 state 55
@@ -959,10 +958,8 @@ state 57
 state 58
 
     (35) O -> JOIN var . U
-    (36) U -> . USING ( Variable = N ) ;
-    (37) U -> . USING ( Variable = string ) ;
-    (38) U -> . USING ( Variable = N ) W
-    (39) U -> . USING ( Variable = string ) W
+    (36) U -> . USING ( Variable ) ;
+    (37) U -> . USING ( Variable ) W
 
     USING           shift and go to state 64
 
@@ -1000,7 +997,7 @@ state 61
     (27) C -> Variable < . = N L
     (28) C -> Variable < . > N L
     (29) C -> Variable < . > string L
-    (43) N -> . nr
+    (41) N -> . nr
 
     =               shift and go to state 68
     >               shift and go to state 69
@@ -1012,7 +1009,7 @@ state 62
 
     (25) C -> Variable > . N L
     (26) C -> Variable > . = N L
-    (43) N -> . nr
+    (41) N -> . nr
 
     =               shift and go to state 72
     nr              shift and go to state 70
@@ -1038,10 +1035,8 @@ state 63
 
 state 64
 
-    (36) U -> USING . ( Variable = N ) ;
-    (37) U -> USING . ( Variable = string ) ;
-    (38) U -> USING . ( Variable = N ) W
-    (39) U -> USING . ( Variable = string ) W
+    (36) U -> USING . ( Variable ) ;
+    (37) U -> USING . ( Variable ) W
 
     (               shift and go to state 73
 
@@ -1088,7 +1083,7 @@ state 67
 state 68
 
     (27) C -> Variable < = . N L
-    (43) N -> . nr
+    (41) N -> . nr
 
     nr              shift and go to state 70
 
@@ -1098,7 +1093,7 @@ state 69
 
     (28) C -> Variable < > . N L
     (29) C -> Variable < > . string L
-    (43) N -> . nr
+    (41) N -> . nr
 
     string          shift and go to state 82
     nr              shift and go to state 70
@@ -1107,12 +1102,11 @@ state 69
 
 state 70
 
-    (43) N -> nr .
+    (41) N -> nr .
 
-    AND             reduce using rule 43 (N -> nr .)
-    LIMIT           reduce using rule 43 (N -> nr .)
-    ;               reduce using rule 43 (N -> nr .)
-    )               reduce using rule 43 (N -> nr .)
+    AND             reduce using rule 41 (N -> nr .)
+    LIMIT           reduce using rule 41 (N -> nr .)
+    ;               reduce using rule 41 (N -> nr .)
 
 
 state 71
@@ -1131,7 +1125,7 @@ state 71
 state 72
 
     (26) C -> Variable > = . N L
-    (43) N -> . nr
+    (41) N -> . nr
 
     nr              shift and go to state 70
 
@@ -1139,11 +1133,9 @@ state 72
 
 state 73
 
-    (36) U -> USING ( . Variable = N ) ;
-    (37) U -> USING ( . Variable = string ) ;
-    (38) U -> USING ( . Variable = N ) W
-    (39) U -> USING ( . Variable = string ) W
-    (44) Variable -> . var
+    (36) U -> USING ( . Variable ) ;
+    (37) U -> USING ( . Variable ) W
+    (42) Variable -> . var
 
     var             shift and go to state 6
 
@@ -1177,7 +1169,7 @@ state 75
     (27) C -> . Variable < = N L
     (28) C -> . Variable < > N L
     (29) C -> . Variable < > string L
-    (44) Variable -> . var
+    (42) Variable -> . var
 
     var             shift and go to state 6
 
@@ -1187,7 +1179,7 @@ state 75
 state 76
 
     (31) L -> LIMIT . N ;
-    (43) N -> . nr
+    (41) N -> . nr
 
     nr              shift and go to state 70
 
@@ -1315,12 +1307,10 @@ state 84
 
 state 85
 
-    (36) U -> USING ( Variable . = N ) ;
-    (37) U -> USING ( Variable . = string ) ;
-    (38) U -> USING ( Variable . = N ) W
-    (39) U -> USING ( Variable . = string ) W
+    (36) U -> USING ( Variable . ) ;
+    (37) U -> USING ( Variable . ) W
 
-    =               shift and go to state 92
+    )               shift and go to state 92
 
 
 state 86
@@ -1417,16 +1407,14 @@ state 91
 
 state 92
 
-    (36) U -> USING ( Variable = . N ) ;
-    (37) U -> USING ( Variable = . string ) ;
-    (38) U -> USING ( Variable = . N ) W
-    (39) U -> USING ( Variable = . string ) W
-    (43) N -> . nr
+    (36) U -> USING ( Variable ) . ;
+    (37) U -> USING ( Variable ) . W
+    (21) W -> . WHERE C
 
-    string          shift and go to state 95
-    nr              shift and go to state 70
+    ;               shift and go to state 94
+    WHERE           shift and go to state 50
 
-    N                              shift and go to state 94
+    W                              shift and go to state 95
 
 state 93
 
@@ -1447,106 +1435,34 @@ state 93
 
 state 94
 
-    (36) U -> USING ( Variable = N . ) ;
-    (38) U -> USING ( Variable = N . ) W
+    (36) U -> USING ( Variable ) ; .
 
-    )               shift and go to state 96
+    var             reduce using rule 36 (U -> USING ( Variable ) ; .)
+    LOAD            reduce using rule 36 (U -> USING ( Variable ) ; .)
+    DISCARD         reduce using rule 36 (U -> USING ( Variable ) ; .)
+    SAVE            reduce using rule 36 (U -> USING ( Variable ) ; .)
+    SHOW            reduce using rule 36 (U -> USING ( Variable ) ; .)
+    SELECT          reduce using rule 36 (U -> USING ( Variable ) ; .)
+    CREATE          reduce using rule 36 (U -> USING ( Variable ) ; .)
+    CALL            reduce using rule 36 (U -> USING ( Variable ) ; .)
+    PROCEDURE       reduce using rule 36 (U -> USING ( Variable ) ; .)
+    $end            reduce using rule 36 (U -> USING ( Variable ) ; .)
+    END             reduce using rule 36 (U -> USING ( Variable ) ; .)
 
 
 state 95
 
-    (37) U -> USING ( Variable = string . ) ;
-    (39) U -> USING ( Variable = string . ) W
+    (37) U -> USING ( Variable ) W .
 
-    )               shift and go to state 97
-
-
-state 96
-
-    (36) U -> USING ( Variable = N ) . ;
-    (38) U -> USING ( Variable = N ) . W
-    (21) W -> . WHERE C
-
-    ;               shift and go to state 98
-    WHERE           shift and go to state 50
-
-    W                              shift and go to state 99
-
-state 97
-
-    (37) U -> USING ( Variable = string ) . ;
-    (39) U -> USING ( Variable = string ) . W
-    (21) W -> . WHERE C
-
-    ;               shift and go to state 100
-    WHERE           shift and go to state 50
-
-    W                              shift and go to state 101
-
-state 98
-
-    (36) U -> USING ( Variable = N ) ; .
-
-    var             reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    LOAD            reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    DISCARD         reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    SAVE            reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    SHOW            reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    SELECT          reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    CREATE          reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    CALL            reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    PROCEDURE       reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    $end            reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-    END             reduce using rule 36 (U -> USING ( Variable = N ) ; .)
-
-
-state 99
-
-    (38) U -> USING ( Variable = N ) W .
-
-    var             reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    LOAD            reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    DISCARD         reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    SAVE            reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    SHOW            reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    SELECT          reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    CREATE          reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    CALL            reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    PROCEDURE       reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    $end            reduce using rule 38 (U -> USING ( Variable = N ) W .)
-    END             reduce using rule 38 (U -> USING ( Variable = N ) W .)
-
-
-state 100
-
-    (37) U -> USING ( Variable = string ) ; .
-
-    var             reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    LOAD            reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    DISCARD         reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    SAVE            reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    SHOW            reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    SELECT          reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    CREATE          reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    CALL            reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    PROCEDURE       reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    $end            reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-    END             reduce using rule 37 (U -> USING ( Variable = string ) ; .)
-
-
-state 101
-
-    (39) U -> USING ( Variable = string ) W .
-
-    var             reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    LOAD            reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    DISCARD         reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    SAVE            reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    SHOW            reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    SELECT          reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    CREATE          reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    CALL            reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    PROCEDURE       reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    $end            reduce using rule 39 (U -> USING ( Variable = string ) W .)
-    END             reduce using rule 39 (U -> USING ( Variable = string ) W .)
+    var             reduce using rule 37 (U -> USING ( Variable ) W .)
+    LOAD            reduce using rule 37 (U -> USING ( Variable ) W .)
+    DISCARD         reduce using rule 37 (U -> USING ( Variable ) W .)
+    SAVE            reduce using rule 37 (U -> USING ( Variable ) W .)
+    SHOW            reduce using rule 37 (U -> USING ( Variable ) W .)
+    SELECT          reduce using rule 37 (U -> USING ( Variable ) W .)
+    CREATE          reduce using rule 37 (U -> USING ( Variable ) W .)
+    CALL            reduce using rule 37 (U -> USING ( Variable ) W .)
+    PROCEDURE       reduce using rule 37 (U -> USING ( Variable ) W .)
+    $end            reduce using rule 37 (U -> USING ( Variable ) W .)
+    END             reduce using rule 37 (U -> USING ( Variable ) W .)
 

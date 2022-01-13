@@ -107,11 +107,9 @@ class LogicGrammar:
         p[0] = {'JOIN': p[2], 'args': p[3]}
 
     def p_Commands9(self, p):
-        """U : USING '(' Variable '=' N ')' ';'
-              | USING '(' Variable '=' string ')' ';'
-              | USING '(' Variable '=' N ')' W
-              | USING '(' Variable '=' string ')' W"""
-        p[0] = {'USING': p[1], 'column': p[3], 'rule': p[4], 'value': p[5], 'args': p[7]}
+        """U : USING '(' Variable ')' ';'
+              | USING '(' Variable ')' W"""
+        p[0] = {'USING': p[1], 'column': p[3], 'args': p[5]}
 
     def p_CFunction(self, p):
         """Function : CALL var ';'"""

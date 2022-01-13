@@ -28,6 +28,7 @@ class LogicEval:
         "< =": lambda args: args[0] <= args[1],
         ">": lambda args: args[0] > args[1],
         "<": lambda args: args[0] < args[1],
+        "in": lambda args: args[0] in args[1],
         "JOIN": lambda args: LogicEval._JOIN(args)
     }
 
@@ -50,10 +51,17 @@ class LogicEval:
             if args['column'] not in Tables[args['JOIN']]:
                 raise Exception("The column { " + args['column'] + " } does not exist in the table { " + args['JOIN'] + " }")
 
-            newTable = LogicEval._CreateTable(Tables[args['FROM']],  {'column': args['column'], 'rule': args['rule'], 'value': args['value']})
+            validId = []
+            for k in Tables[args['FROM']][args['column']]:
+                if k in tables.Tables[args['JOIN']][args['column']]:
+                    validId.append(k)
 
-            newTable2 = LogicEval._CreateTable(Tables[args['JOIN']],
-                                              {'column': args['column'], 'rule': args['rule'], 'value': args['value']})
+
+            newTable = LogicEval._CreateTable(Tables[args['FROM']],  {'column': args['column'], 'rule': 'in', 'value': validId})
+
+            newTable2 = LogicEval._CreateTable(Tables[args['JOIN']], {'column': args['column'], 'rule': 'in', 'value': validId})
+
+            newTable2.pop(args['column'])
 
             return {**newTable, **newTable2}
 
@@ -238,6 +246,22 @@ class LogicEval:
                 table = LogicEval.Commands[args['newCommands']['Command']](newCommand)
             elif 'JOIN' in args:
                 table = LogicEval._JOIN(args)
+
+            if 'WHERE' in args:
+                newTable = {}
+                if args['WHERE']['column'] in table:
+                    newTable = LogicEval._CreateTable(table, args['WHERE'])
+                else:
+                    raise Exception("The column { " + args['WHERE']['column'] + " } does not exist in the database")
+
+                if 'AND' in args:
+                    for x in args['AND']:
+                        if x['column'] in table:
+                            newTable = LogicEval._CreateTable(newTable, x)
+                        else:
+                            raise Exception("The column { " + x['column'] + " } does not exist in the database")
+                table = newTable
+
 
             for key in table:
                 tables.AddColumns(args['TABLE'], key)
