@@ -51,15 +51,10 @@ class LogicEval:
             if args['column'] not in Tables[args['JOIN']]:
                 raise Exception("The column { " + args['column'] + " } does not exist in the table { " + args['JOIN'] + " }")
 
-            validId = []
-            for k in Tables[args['FROM']][args['column']]:
-                if k in tables.Tables[args['JOIN']][args['column']]:
-                    validId.append(k)
 
+            newTable = LogicEval._CreateTable(Tables[args['FROM']],  {'column': args['column'], 'rule': 'in', 'value': Tables[args['JOIN']][args['column']]})
 
-            newTable = LogicEval._CreateTable(Tables[args['FROM']],  {'column': args['column'], 'rule': 'in', 'value': validId})
-
-            newTable2 = LogicEval._CreateTable(Tables[args['JOIN']], {'column': args['column'], 'rule': 'in', 'value': validId})
+            newTable2 = LogicEval._CreateTable(Tables[args['JOIN']], {'column': args['column'], 'rule': 'in', 'value': Tables[args['JOIN']][args['column']]})
 
             newTable2.pop(args['column'])
 
@@ -290,7 +285,7 @@ class LogicEval:
 
             print("THe function {"+ast['FunctionName']+"} was created and successfully added to the list of functions")
             print("--------------------------------------------------------------------------------------------------\n")
-            return  None
+            return None
         except Exception as e:
             raise Exception(e)
 

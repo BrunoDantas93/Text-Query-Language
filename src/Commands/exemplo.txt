@@ -1,5 +1,4 @@
-LOAD TABLE produtos FROM "produtos2.csv";
-LOAD TABLE vendas FROM "vendas.csv";
+LOAD TABLE produtos FROM "produtos2.csv";LOAD TABLE vendas FROM "vendas.csv";
 SAVE TABLE vendas AS "olaaaa.csv";
 SHOW TABLE produtos;
 SHOW TABLE vendas;

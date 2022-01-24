@@ -6,4 +6,5 @@ CREATE TABLE bestss FROM SELECT * FROM programars WHERE avaliacoes >= 4.5;
 SELECT * FROM bestss LIMIT 10;
 SAVE TABLE bestss AS "bestss.csv";
 DISCARD TABLE bestss;
+SELECT * FROM programars WHERE avaliacoes >= 4.5 AND avaliacoes <= 5 LIMIT 15;
 END
